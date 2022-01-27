@@ -37,6 +37,9 @@ function photographerPresentationText(data) {
     photographHeader.appendChild(div);
     photographHeader.appendChild(portraitDiv);
 
+    const photographerName = document.querySelector("#modal_photographer");
+    photographerName.textContent = name;
+   
 };
 
 // TODO fetch json data instead of fakeData
