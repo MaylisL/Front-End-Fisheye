@@ -18,14 +18,23 @@
     </main>
     <div id="contact_modal">
 			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
+				<header class="modal_header">
+          <div class="modal_title"> 
+            <h2>Contactez-moi</h2>
+            <p id="modal_photographer"></p>
+          </div>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
 				<form>
 					<div>
 						<label>Prénom</label>
-						<input />
+						<input type="text"/>
+            <label>Nom</label>
+						<input type="text"/>
+            <label>Email</label>
+						<input type="Email"/>
+            <label>Message</label>
+						<textarea name="message" id="message" cols="74" rows="30"></textarea>
 					</div>
           <button class="contact_button">Envoyer</button>
 				</form>
