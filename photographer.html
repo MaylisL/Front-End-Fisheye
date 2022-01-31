@@ -15,6 +15,17 @@
       <div class="photograph-header">
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
       </div>
+      <div class="photographer_sort"> 
+        <label for="sort">Trier par</label>
+          <select name="sort" id="sort">
+            <option value="popularity">Popularité</option>
+            <option value="date">Date</option>
+            <option value="title">Titre</option>
+          </select>
+          <span class="custom-arrow"></span>
+      </div>
+      <div class="photographer_gallery">
+      </div>
     </main>
     <div id="contact_modal">
 			<div class="modal">
@@ -23,7 +34,7 @@
             <h2>Contactez-moi</h2>
             <p id="modal_photographer"></p>
           </div>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <img src="assets/icons/close.svg" alt="closing lightbox" onclick="closeModal()" />
         </header>
 				<form>
 					<div>
@@ -40,6 +51,20 @@
 				</form>
 			</div>
 		</div>
+    <div class="lightbox">
+      <button class="lightbox_close" type="button">
+        <img src="assets/icons/lightbox-closing.svg" alt="closing lightbox">
+      </button>
+      <button class="lightbox_next" type="button">
+        <img src="assets/icons/right-arrow.svg" " alt="next picture">
+      </button>
+      <button class="lightbox_previous" type="button">
+        <img src="assets/icons/left-arrow.svg" alt="previous picture">
+      </button>
+      <div class="lightbox_container">
+        <img src="" alt="">
+      </div>
+    </div>
     <script src="scripts/pages/photographer.js"></script>
     <script src="scripts/utils/contactForm.js"></script>
   </body>
