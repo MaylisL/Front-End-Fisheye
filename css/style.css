@@ -47,8 +47,10 @@ h1 {
     align-items: center;
     flex-direction: column;
 }
-
-.photographer_section article img {
+.photographer_page_portrait{
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
     height: 200px;
     width: 200px;
 }
@@ -76,4 +78,6 @@ h1 {
     font-size: 9px;
     margin-block: 3px;
 }
+
+
 

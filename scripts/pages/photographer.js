@@ -64,7 +64,7 @@ photographerPresentationText(fakeData);
 
 
 // fake data for photographer galery
-const fakeGallery = [{
+let fakeGallery = [{
 			"id": 623534343,
 			"photographerId": 243,
 			"title": "Lonesome",
@@ -101,12 +101,85 @@ const fakeGallery = [{
 			"price": 45
 		}]
 
+
+class Lightbox{ 
+    constructor(image,listImage) {
+        this.closeLightbox =  this.closeLightbox.bind(this);
+        this.selectedImage  = image; //image currently displayed on lightbox the first time we click ONLY. then NO!
+        this.listImage = listImage; // list of all the image
+        this.nextPicture = this.nextPicture.bind(this);
+        this.previousPicture = this.previousPicture.bind(this);
+
+        console.log(this);
+        this.openLightbox();
+    }
+    displayImage (){ // function a eéutiliser pour montrer l'image à l'ouverture de la lightbox et aussi ensuite au click next ou previous
+        const selectedImageSource  = 'assets/images/media/' + this.selectedImage.image;
+        document.querySelector('.lightbox_container img').setAttribute('src', selectedImageSource);
+        document.querySelector('.lightbox_container img').setAttribute('alt',this.selectedImage.title );
+    }
+
+    openLightbox(){
+        document.querySelector('.lightbox').style.display = 'block';
+        this.displayImage()
+        document.querySelector('.lightbox_close').addEventListener('click',this.closeLightbox);
+        document.querySelector('.lightbox_next').addEventListener('click',this.nextPicture);
+        document.querySelector('.lightbox_previous').addEventListener('click',this.previousPicture);
+    }
+
+    closeLightbox(){
+        document.querySelector('.lightbox_close').removeEventListener('click',this.closeLightbox);
+        document.querySelector('.lightbox_next').removeEventListener('click',this.nextPicture);
+        document.querySelector('.lightbox_previous').removeEventListener('click',this.previousPicture);
+
+        document.querySelector('.lightbox').style.display = 'none';
+
+    }
+
+    nextPicture(){ // click droit
+        const findCurrentPosition = (element) => element.id === this.selectedImage.id;
+        const currentIndex = this.listImage.findIndex(findCurrentPosition); //retourne l'index de la position...
+        //  ... de l'image actuelle et la stock grâce à la constance.
+        const lastIndexOfArray = this.listImage.length -1; // pour déterminer le nb de photos dans ma liste
+        if (lastIndexOfArray === currentIndex ) {
+            // display first image en cliquant "à droite"
+            this.selectedImage = this.listImage[0];         
+            this.displayImage()
+        } else {
+            this.selectedImage = this.listImage[currentIndex+1];         
+            this.displayImage()
+        }
+        
+// exemple de mdn pour trouver un élément avec la condition  = true: 
+// const array1 = [5, 12, 8, 130, 44];
+//const isLargeNumber = (element) => element > 13;
+//console.log(array1.findIndex(isLargeNumber));
+    }
+
+    previousPicture(){ // click gauche
+        const findCurrentPosition = (element) => element.id === this.selectedImage.id;
+        const currentIndex = this.listImage.findIndex(findCurrentPosition); //retourne l'index de la position...
+        //  ... de l'image actuelle et la stock grâce à la constance.
+        const firstIndexOfArray = 0; // pour définir la première image de ma liste
+        const lastIndexOfArray = this.listImage.length -1;
+        if (firstIndexOfArray === currentIndex ) {
+            // en cliquant "à gauche" display last image
+            this.selectedImage = this.listImage[lastIndexOfArray];         
+            this.displayImage()
+        } else {
+            this.selectedImage = this.listImage[currentIndex-1];         
+            this.displayImage()
+        }
+    }
+}
+
+
 // function to create a photo card with image + name + likes + heart icon
 
 function createGalleryCard(mediaObject) {
 
     const {image, title, likes} = mediaObject;
-    const imagesSource = `assets/images/media/Mimi/${image}`;
+    const imagesSource = `assets/images/media/${image}`;
     const gallery = document.querySelector('.photographer_gallery');
     
     const article = document.createElement( 'article' );
@@ -115,7 +188,7 @@ function createGalleryCard(mediaObject) {
     const linkLightbox = document.createElement('a');
     linkLightbox.setAttribute('title', 'zoom image');
     linkLightbox.setAttribute('href', imagesSource);
-    linkLightbox.addEventListener('click', openLightbox)
+    linkLightbox.addEventListener('click', openLightbox);
 
     const divImage = document.createElement('div');
     divImage.classList.add('card_image_container');
@@ -134,8 +207,7 @@ function createGalleryCard(mediaObject) {
 
     const heartIcon = document.createElement ('img');
     heartIcon.setAttribute("src", 'assets/icons/heart.svg');
-   
-    // ajouter alt
+   // ajouter alt
     
     gallery.appendChild(article);
     linkLightbox.appendChild(divImage);
@@ -145,21 +217,112 @@ function createGalleryCard(mediaObject) {
     underImageDiv.appendChild(p);
     underImageDiv.appendChild(nbLikes);
     underImageDiv.appendChild(heartIcon);
+
+    // function to create the lightbox on click
+    function openLightbox (e) {
+        e.preventDefault()
+        let lightbox = new Lightbox(mediaObject, fakeGallery)
+    }
 }
 
 
-fakeGallery.forEach(mediaObject => {
-    createGalleryCard(mediaObject)  
-});
 
+//  Function which will display the images in the gallery
 
-// function sort 3 options
-
-
-// function to create the lightbox on click
-function openLightbox (e) {
-    e.preventDefault()
-    document.querySelector('.lightbox').style.display = 'block';
-    document.querySelector('.lightbox_container img').setAttribute('src', e.currentTarget.getAttribute('href'))
+function displayImages(listOfImages) {
+    document.querySelector('.photographer_gallery').innerHTML="";
+    listOfImages.forEach(function(objet) {
+        createGalleryCard(objet)
+    });
 }
-//const lightboxLinks = document.querySelectorAll
+
+
+// FUNCTION SORT
+    // function which SHOW the sort options
+document.querySelector(".button_dropdown").addEventListener('click', showOptions); 
+
+function showOptions() {
+    document.querySelector(".sort_dropdown_options").classList.toggle("show");
+    console.log('je suis là')
+  }
+
+  // function which HIDE the sort options if we click anywhere on the widow except from the button.
+
+window.addEventListener('click',hideExceptButton); 
+
+function hideExceptButton (event){
+    console.log(event.target)
+    if (!event.target.matches('.button_dropdown') && !event.target.matches('.fa-chevron-up') && !event.target.matches('.button-name') ) {
+        hideOptions();
+    }
+}
+
+function hideOptions() {
+    document.querySelector(".sort_dropdown_options").classList.remove("show");
+    console.log('je ne suis pas là')
+}
+
+// function sort 3 options    
+/////// sort by Popularity from biggest likes to smallest like
+function changeButtonName(newName) {
+    document.querySelector(".button-name").textContent = newName; 
+}
+
+document.querySelector("#popularity").addEventListener('click', sortByPopularity); 
+function sortByPopularity() {
+    
+    const arrayByLikes = fakeGallery.sort(function(a,b) {
+        a = a.likes;
+        b = b.likes;
+        return b - a;
+    })
+    changeButtonName('Popularité')
+    console.log(arrayByLikes)
+    displayImages(arrayByLikes);
+}
+    /////// sort by Date from the newest to the oldest
+document.querySelector("#date").addEventListener('click', sortByDate); 
+function sortByDate() {
+    
+    const arrayByDate = fakeGallery.sort(function(a,b) {
+        a = Date.parse(a.date); //Date.Parse transform en milliseconde (timestamp)
+        b = Date.parse(b.date);
+        return b - a;
+    })
+    changeButtonName('Date')
+    console.log(arrayByDate)
+    displayImages(arrayByDate);
+}
+
+    /////// sort by Title alphabetically
+
+document.querySelector("#title").addEventListener('click', sortByTitle); 
+function sortByTitle() {
+
+    const arrayByTitle = fakeGallery.sort(function(a,b) {
+        a = a.title.toLowerCase();
+        b = b.title.toLowerCase();
+        return a < b ? -1 : a > b ? 1 : 0;
+    })
+    changeButtonName('Titre')
+    console.log(arrayByTitle)
+    displayImages(arrayByTitle);
+}
+
+// fakegallery sera par défaut sur un tri par popularité
+// dans la constance fakegallery, pour chacun des objets j'exécute une fonction sans nom qui prend le paramètre
+// (un objet de ma constance) qui va appeller une fonction que j'ai créée createGalleryCard avec comme paramètre 
+//(les mêmes objets précédents) qui créé les cartes des images.
+// before  ... fakeGallery = sortByPopularity() ...
+
+sortByPopularity();
+
+
+
+
+//   places.sort( function( a, b ) {
+//     a = a.city.toLowerCase();
+//     b = b.city.toLowerCase();
+
+//     return a < b ? -1 : a > b ? 1 : 0;
+// });

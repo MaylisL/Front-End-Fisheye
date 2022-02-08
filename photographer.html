@@ -3,8 +3,8 @@
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6daba08427.js" crossorigin="anonymous"></script>
     <title>Fisheye - photographe </title>
   </head>
   <body>
@@ -17,12 +17,22 @@
       </div>
       <div class="photographer_sort"> 
         <label for="sort">Trier par</label>
-          <select name="sort" id="sort">
-            <option value="popularity">Popularité</option>
-            <option value="date">Date</option>
-            <option value="title">Titre</option>
-          </select>
+        <div id="dropdownFunction" class="sort_dropdown">
+          <button type="button" class="button_dropdown">
+            <p class="button-name"></p>
+            <i class="fas fa-chevron-up"></i>
+          </button>
+          <div class="sort_dropdown_options">
+            <div class="align-popularity">
+              <p id="popularity">Popularité</p>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <p id="date">Date</p>
+            <p id="title">Titre</p>
+          </div>
           <span class="custom-arrow"></span>
+        </div>   
+          
       </div>
       <div class="photographer_gallery">
       </div>
