@@ -1,5 +1,5 @@
 function photographerFactory(data) {
-    const {name, portrait, tagline, city, country, price, } = data;
+    const {name, portrait, tagline, city, country, price,id} = data;
     const location = city + ", " + country;
     const priceDay = price + "€/jour";
     const pictureSource = `assets/photographers/${portrait}`;
@@ -8,7 +8,7 @@ function photographerFactory(data) {
         const article = document.createElement( 'article' );
         const linkPhotographer = document.createElement('a');
         linkPhotographer.setAttribute('title', 'photographerPage');
-        linkPhotographer.setAttribute('href', 'photographer.html');
+        linkPhotographer.setAttribute('href', 'photographer.html?id='+id);
         const img = document.createElement( 'img' );
         img.setAttribute("src", pictureSource);
         img.setAttribute('alt', 'portrait du photographe ' + name);

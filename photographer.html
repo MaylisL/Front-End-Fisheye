@@ -9,23 +9,25 @@
   </head>
   <body>
     <header>
-      <img src="assets/images/logo.png" class="logo" />
+      <a href="index.html">
+        <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page"/>
+      </a>  
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <button class="contact_button" onclick="displayModal()" aria-label="contact-me">Contactez-moi</button>
       </div>
       <div class="photographer_sort"> 
         <label for="sort">Trier par</label>
         <div id="dropdownFunction" class="sort_dropdown">
-          <button type="button" class="button_dropdown">
-            <p class="button-name"></p>
-            <i class="fas fa-chevron-up"></i>
+          <button type="button" class="button_dropdown" aria-haspopup=”listbox” aria-expanded="false" >
+            <p class="button-name">Popularité</p>
+            <i class="fas fa-chevron-down"></i>
           </button>
           <div class="sort_dropdown_options">
             <div class="align-popularity">
               <p id="popularity">Popularité</p>
-              <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-chevron-up"></i>
             </div>
             <p id="date">Date</p>
             <p id="title">Titre</p>
@@ -61,19 +63,23 @@
 				</form>
 			</div>
 		</div>
-    <div class="lightbox">
+    <div class="lightbox" aria-label="image closeup view">
       <button class="lightbox_close" type="button">
-        <img src="assets/icons/lightbox-closing.svg" alt="closing lightbox">
+        <img src="assets/icons/lightbox-closing.svg" alt="Close dialog">
       </button>
       <button class="lightbox_next" type="button">
-        <img src="assets/icons/right-arrow.svg" " alt="next picture">
+        <img src="assets/icons/right-arrow.svg" " alt="Next image">
       </button>
       <button class="lightbox_previous" type="button">
-        <img src="assets/icons/left-arrow.svg" alt="previous picture">
+        <img src="assets/icons/left-arrow.svg" alt="Previous image">
       </button>
       <div class="lightbox_container">
-        <img src="" alt="">
       </div>
+    </div>
+    <div class="total-likes">
+      <span class="likes"></span>
+      <img src="assets/icons/heart-black.svg" alt="heart likes icon">
+      <p class="price"></p>
     </div>
     <script src="scripts/pages/photographer.js"></script>
     <script src="scripts/utils/contactForm.js"></script>

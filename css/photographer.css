@@ -3,6 +3,11 @@
 }
 #contact_modal {
     display: none;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background-color: rgb(255, 255, 255,0.9);
 }
 
 .photograph-header {
@@ -22,12 +27,14 @@
     order:3;
     border-radius: 50%;
     overflow: hidden;
+    height: 200px;
+    width: 200px;
 }
 
 .photographer_portrait img {
     object-fit: cover;
-    height: 200px;
-    width: 200px;
+    height: 100%;
+    width: 100%;
 }
 
 
@@ -61,6 +68,10 @@
     border-radius: 5px;
     cursor: pointer;
     order:2;
+}
+.contact_button:hover {
+    background-color: #DB8876;
+    color: #000000;
 }
 
 .modal {
@@ -200,10 +211,6 @@ form input, form textarea {
     border-top: white solid 1px;
 }
 
-
-
-
-
 .photographer_gallery {
     width: 1240px;
     display: flex;
@@ -220,7 +227,7 @@ form input, form textarea {
     cursor: pointer;
 }
 
-.card_image_container img {
+.card_image_container img, video {
     width: 350px;
     height: 300px;
     border-radius: 5px;
@@ -251,17 +258,29 @@ form input, form textarea {
     font-weight: 400;
 }
 
-main::after {
-    content:"";
+.total-likes {
     width: 376px;
-    height: 30px;
+    height: 60px;
     border-radius: 5px 5px 0px 0px;
     position: fixed;
     bottom: 0px;
     right:36px;
-    
     background-color: #DB8876;
     color: #000000;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 34px;
+    font-size: 24px;
+}
+
+.likes {
+    margin-right: 5px;
+}
+
+.price {
+    margin-left: auto;
 }
 
 .lightbox {
@@ -313,7 +332,6 @@ main::after {
     right: 131px;
     cursor: pointer;
 }
-
 
 .lightbox_container {  
     margin-left: 195px;
