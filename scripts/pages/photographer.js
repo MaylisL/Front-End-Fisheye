@@ -4,15 +4,12 @@ async function getPhotographerData() {
     
     const jsonData = await fetch('data/photographers.json')
     .then(responseData => responseData.json()) 
-    
     return jsonData;
 }
 
 function getPhotographerId() {
     const currentUrl = new URL(location.href);
     const searchParams= new URLSearchParams(currentUrl.search);
-    console.log(currentUrl)
-    console.log(searchParams);
     return searchParams.get("id")
 }
 
@@ -156,33 +153,61 @@ class PhotographerPage {
     //  Function which will display the images in the gallery
     displayImages() {
         document.querySelector('.photographer_gallery').innerHTML="";
-        this.photographerGallery.forEach(media => {
-            this.createGalleryCard(media)
+        this.photographerGallery.forEach(mediaObject => {
+            this.createGalleryCard(mediaObject)
         });
     }
+    
     updateGallery(newGallery) {
         this.photographerGallery = newGallery;
         this.displayImages();
     }
 }
 
+// function to clear all children
+
+function removeAllChildrenNodes(parentNode) {
+    while (parentNode.firstChild) {
+        parentNode.removeChild(parentNode.firstChild)
+    }
+}
 
 class Lightbox{ 
-    constructor(image,listImage) {
+    constructor(mediaObject,listMediaObject) {
         this.closeLightbox =  this.closeLightbox.bind(this);
-        this.selectedImage  = image; //image currently displayed on lightbox the first time we click
-        this.listImage = listImage; 
+        this.onKeyUp = this.onKeyUp.bind(this)
+        this.selectedImage  = mediaObject; //image currently displayed on lightbox the first time we click
+        this.listImage = listMediaObject; 
         this.nextPicture = this.nextPicture.bind(this);
         this.previousPicture = this.previousPicture.bind(this);
-
-        console.log(this);
         this.openLightbox();
+        document.addEventListener('keyup', this.onKeyUp)
     }
+
+
+    onKeyUp(e) {
+        if(e.key === 'Escape') {
+            this.closeLightbox(e)
+        }
+        else if(e.key === 'ArrowLeft') {
+            this.previousPicture(e)
+        }
+        else if(e.key === 'ArrowRight') {
+            this.nextPicture(e)
+        }
+        
+    }
+
     displayImage (){ 
         const selectedImageSource  = 'assets/images/media/' + this.selectedImage.image;
         const selectedVideoSource = 'assets/images/media/' + this.selectedImage.video;
         const mediaDiv = document.querySelector('.lightbox_container'); 
-        mediaDiv.removeChild(mediaDiv.lastChild);
+        
+        const mediaTitle = document.createElement('p');
+        mediaTitle.classList.add("image-title");
+        mediaTitle.textContent = this.selectedImage.title;
+
+        removeAllChildrenNodes(mediaDiv);
 
         if (this.selectedImage.image) {
             const imageDisplayed = document.createElement('img');
@@ -199,6 +224,9 @@ class Lightbox{
             videoDisplayed.appendChild(videoSourceBalise);
             mediaDiv.appendChild(videoDisplayed);
         }
+
+        mediaDiv.appendChild(mediaTitle);
+
     }
 
     openLightbox(){
@@ -209,15 +237,18 @@ class Lightbox{
         document.querySelector('.lightbox_previous').addEventListener('click',this.previousPicture);
     }
 
-    closeLightbox(){
+    closeLightbox(e){
+        e.preventDefault();
         document.querySelector('.lightbox_close').removeEventListener('click',this.closeLightbox);
         document.querySelector('.lightbox_next').removeEventListener('click',this.nextPicture);
         document.querySelector('.lightbox_previous').removeEventListener('click',this.previousPicture);
+        document.removeEventListener('keyup',this.onKeyUp);
         document.querySelector('.lightbox').style.display = 'none';
 
     }
 
-    nextPicture(){ // click right
+    nextPicture(e){ // click right
+        e.preventDefault();
         const findCurrentPosition = (element) => element.id === this.selectedImage.id;
         const currentIndex = this.listImage.findIndex(findCurrentPosition); //return the position index of the current image and keep the value
         const lastIndexOfArray = this.listImage.length -1; // to define the number of pictures in the list 
@@ -230,7 +261,8 @@ class Lightbox{
         }
     }
 
-    previousPicture(){ // click left
+    previousPicture(e){ // click left
+        e.preventDefault();
         const findCurrentPosition = (element) => element.id === this.selectedImage.id;
         const currentIndex = this.listImage.findIndex(findCurrentPosition); 
         const firstIndexOfArray = 0; // to define the first image of the list
@@ -252,13 +284,11 @@ document.querySelector(".button_dropdown").addEventListener('click', showOptions
 // function which SHOW the sort options
 function showOptions() {
     document.querySelector(".sort_dropdown_options").classList.toggle("show");
-    console.log('je suis là')
   }
 
 window.addEventListener('click',hideExceptButton); 
 // function which HIDE the sort options if we click anywhere on the widow except from the button.
 function hideExceptButton (event){
-    console.log(event.target)
     if (!event.target.matches('.button_dropdown') && !event.target.matches('.fa-chevron-down') && !event.target.matches('.button-name') ) {
         hideOptions();
     }
@@ -266,7 +296,6 @@ function hideExceptButton (event){
 
 function hideOptions() {
     document.querySelector(".sort_dropdown_options").classList.remove("show");
-    console.log('je ne suis pas là')
 }
 
 // function sort 3 options    
@@ -284,7 +313,6 @@ function sortByPopularity() {
         return b - a;
     })
     changeButtonName('Popularité')
-    console.log(arrayByLikes)
     photographerPage.updateGallery(arrayByLikes);
 }
     // sort by Date from the newest to the oldest
@@ -297,7 +325,6 @@ function sortByDate() {
         return b - a;
     })
     changeButtonName('Date')
-    console.log(arrayByDate)
     photographerPage.updateGallery(arrayByDate);
 }
 
@@ -312,7 +339,6 @@ function sortByTitle() {
         return a < b ? -1 : a > b ? 1 : 0;
     })
     changeButtonName('Titre')
-    console.log(arrayByTitle)
     photographerPage.updateGallery(arrayByTitle);
 }
 
@@ -344,7 +370,7 @@ async function init() {
     const photographerGallery = result.media.filter(mediaObject=>mediaObject.photographerId===parseInt(photographerId,10))
     photographerPage = new PhotographerPage(selectedPhotographer, photographerGallery);
     photographerPage.displayPhotographerPresentation();
-    photographerPage.displayImages();
+    sortByPopularity(); // display the gallery, sorted by popularity "by default".
     displayLikes();
     displayPrice();
 };

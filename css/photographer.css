@@ -1,13 +1,19 @@
+body {
+    position: relative;
+}
 #main {
     margin-inline: 100px;
 }
 #contact_modal {
     display: none;
     position: absolute;
-    top: 56px;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     background-color: rgb(255, 255, 255,0.9);
+    padding-top: 56px;
+    z-index: 1;
 }
 
 .photograph-header {
@@ -84,6 +90,7 @@
     justify-content: space-between;
     padding: 35px;
     margin: auto;
+    box-shadow: -5px 10px 15px rgb(181 178 178);
 }
 
 .modal header {
@@ -227,11 +234,12 @@ form input, form textarea {
     cursor: pointer;
 }
 
-.card_image_container img, video {
+.card_image_container img, .card_image_container video {
     width: 350px;
     height: 300px;
     border-radius: 5px;
     object-fit: cover;
+    object-position: 0% 35%;
 }
 
 .card_body_container {
@@ -340,11 +348,22 @@ form input, form textarea {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    
+    flex-direction: column;
 
 }
 
-.lightbox_container img {
+.lightbox_container img, .lightbox_container video {
     overflow: auto;
-    max-height: 80%
+    max-height: 80%;
+    border-radius: 5px;
+    max-width: 100%;
+}
+
+.image-title {
+    color: #901C1C;
+    font-size: 24px;
+    font-weight: normal;
+    align-self: flex-start;
+    
+    
 }
