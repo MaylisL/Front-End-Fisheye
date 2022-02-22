@@ -1,8 +1,7 @@
 let photographerPage;
 
 async function getPhotographerData() {
-    
-    const jsonData = await fetch('data/photographers.json')
+    const jsonData = await fetch("data/photographers.json")
     .then(responseData => responseData.json()) 
     return jsonData;
 }
@@ -28,37 +27,48 @@ class PhotographerPage {
          const location = city + ", " + country;
      
          // text presentation div
-         const div = document.createElement( 'div');
+         const div = document.createElement("div");
          div.classList.add("photographer_presentation");
+         div.setAttribute("tabindex",0);
      
-         const h2 = document.createElement( 'h2' );
+         const h2 = document.createElement("h2");
          h2.textContent = name;
      
-         const paragraphe1 = document.createElement( 'p' );
-         paragraphe1.classList.add('location_presentation');
+         const paragraphe1 = document.createElement("p");
+         paragraphe1.classList.add("location_presentation");
          paragraphe1.textContent = location;
          
-         const paragraphe2 = document.createElement( 'p' );
-         paragraphe2.classList.add('tagline_presentation');
+         const paragraphe2 = document.createElement("p");
+         paragraphe2.classList.add("tagline_presentation");
          paragraphe2.textContent = tagline;
      
          div.appendChild(h2);
          div.appendChild(paragraphe1);
          div.appendChild(paragraphe2);
+
+         // button 
+         const contactButton = document.createElement('button');
+         contactButton.classList.add("contact_button");
+         contactButton.setAttribute("aria-label", "contactez-moi");
+         contactButton.setAttribute("aria-haspopup",'dialog');
+         contactButton.textContent="Contactez-moi";
+         contactButton.addEventListener("click",displayModal); //displayModal function from contactForm.js
+
      
          // portrait div
          const pictureSource = `assets/photographers/${portrait}`;
      
-         const portraitDiv = document.createElement( 'div');
+         const portraitDiv = document.createElement( "div");
          portraitDiv.classList.add("photographer_portrait");
      
-         const img = document.createElement( 'img');
+         const img = document.createElement("img");
          img.setAttribute("src", pictureSource);
-         img.setAttribute('alt', 'portrait du photographe ' + name)
+         img.setAttribute("alt", "portrait du photographe " + name)
          portraitDiv.appendChild(img);
      
          const photographHeader = document.querySelector(".photograph-header");
          photographHeader.appendChild(div);
+         photographHeader.appendChild(contactButton);
          photographHeader.appendChild(portraitDiv);
      
          const photographerName = document.querySelector("#modal_photographer");
@@ -70,8 +80,7 @@ class PhotographerPage {
     createGalleryCard(mediaObject) {
 
         const {image, title, likes, video} = mediaObject;
-        const imagesSource = `assets/images/media/${image}`;
-        const videosSource = `assets/images/media/${video}`;
+        const mediaSource = `assets/images/media/${image || video}`;
         const gallery = document.querySelector('.photographer_gallery');
         
         const article = document.createElement( 'article' );
@@ -79,74 +88,76 @@ class PhotographerPage {
     
         const linkLightbox = document.createElement('a');
         linkLightbox.setAttribute('title', title);
-        linkLightbox.setAttribute('href', imagesSource);
+        linkLightbox.setAttribute('href', mediaSource);
+        linkLightbox.setAttribute('aria-haspopup','dialog');
+        
+
         linkLightbox.addEventListener('click', openLightbox);
-    
-        const divImage = document.createElement('div');
-        divImage.classList.add('card_image_container');
-        const img = document.createElement( 'img' );
-        img.setAttribute("src", imagesSource);
-        img.setAttribute('alt',  title + ', closeup view');
+        const divMedia = document.createElement('div');
+        divMedia.classList.add('card_image_container');
        
-        const vdo = document.createElement( 'video' );
-        vdo.setAttribute("controls", true)
-        const sourceElement = document.createElement('source');
-        sourceElement.setAttribute("src", videosSource);
-        sourceElement.setAttribute("type", 'video/mp4');
-        vdo.appendChild(sourceElement);
-    
-       
-        const underImageDiv = document.createElement('div');
-        underImageDiv.classList.add('card_body_container');
+        if(mediaObject.hasOwnProperty('image')){
+            const img = document.createElement( 'img' );
+            img.setAttribute("src", mediaSource);
+            img.setAttribute('alt',  title + ', closeup view');
+            divMedia.appendChild(img);
+        }
+        else {
+            const vdo = document.createElement( 'video' );
+            const sourceElement = document.createElement('source');
+            sourceElement.setAttribute("src", mediaSource);
+            vdo.setAttribute("aria-label", 'video ' + title + ', closeup view');
+            sourceElement.setAttribute("type", 'video/mp4');
+            vdo.appendChild(sourceElement);
+            divMedia.appendChild(vdo);
+        }
+
+        const underMediaDiv = document.createElement('div');
+        underMediaDiv.classList.add('card_body_container');
     
         const p = document.createElement( 'p' );
         p.textContent = title;
     
-        const nbLikes = document.createElement ('span');
+        const nbLikes = document.createElement('span');
         nbLikes.textContent = likes;
     
-        const heartIcon = document.createElement ('img');
-        heartIcon.setAttribute("src", 'assets/icons/heart.svg');
-        heartIcon.setAttribute('alt', 'likes');
-        heartIcon.addEventListener('click', liked); 
+        const heartIconButton = document.createElement('button');
+        heartIconButton.classList.add('heart_icon-button');
+        const heartIconImage = document.createElement('img');
+        heartIconImage.setAttribute("src", 'assets/icons/heart.svg');
+        heartIconImage.setAttribute('alt', 'bouton ajouter un coeur');
+        heartIconButton.addEventListener('click', liked); 
+        heartIconButton.appendChild(heartIconImage);
 
         function liked() {
     
             let totalLikes = document.querySelector(".likes")
-            let isLiked = heartIcon.classList.contains('isLiked')
+            let isLiked = heartIconButton.classList.contains('isLiked')
             if (isLiked) {
                 // remove isLiked class and decrement number of likes
-                heartIcon.classList.remove('isLiked')
+                heartIconButton.classList.remove('isLiked')
                 nbLikes.textContent = Number(nbLikes.textContent) - 1;
                 totalLikes.textContent = Number(totalLikes.textContent) -1;
             } else {
                 // add isLiked class and increment number of likes
-                heartIcon.classList.add('isLiked')
+                heartIconButton.classList.add('isLiked')
                 nbLikes.textContent = Number(nbLikes.textContent) + 1;
                 totalLikes.textContent = Number(totalLikes.textContent) +1;
             }
         }
-
         
-        if(mediaObject.hasOwnProperty('image')){
-            divImage.appendChild(img);
-        }
-        else {
-            divImage.appendChild(vdo);
-        }
-
         gallery.appendChild(article);
-        linkLightbox.appendChild(divImage);
+        linkLightbox.appendChild(divMedia);
         article.appendChild(linkLightbox);
-        article.appendChild(underImageDiv);
-        underImageDiv.appendChild(p);
-        underImageDiv.appendChild(nbLikes);
-        underImageDiv.appendChild(heartIcon);
+        article.appendChild(underMediaDiv);
+        underMediaDiv.appendChild(p);
+        underMediaDiv.appendChild(nbLikes);
+        underMediaDiv.appendChild(heartIconButton);
     
         // function to create the lightbox on click
         function openLightbox (e) {
-            e.preventDefault()
-            let lightbox = new Lightbox(mediaObject, photographerPage.photographerGallery)
+            e.preventDefault();
+            new Lightbox(mediaObject, photographerPage.photographerGallery);
         }
     };
 
@@ -205,6 +216,7 @@ class Lightbox{
         
         const mediaTitle = document.createElement('p');
         mediaTitle.classList.add("image-title");
+        mediaTitle.setAttribute("tabindex", 0);
         mediaTitle.textContent = this.selectedImage.title;
 
         removeAllChildrenNodes(mediaDiv);
@@ -235,6 +247,10 @@ class Lightbox{
         document.querySelector('.lightbox_close').addEventListener('click',this.closeLightbox);
         document.querySelector('.lightbox_next').addEventListener('click',this.nextPicture);
         document.querySelector('.lightbox_previous').addEventListener('click',this.previousPicture);
+        document.querySelector('.image-title').focus();
+        document.querySelector('.lightbox').setAttribute('aria-hidden', false);
+        document.querySelector("main").setAttribute('aria-hidden', true);
+        document.querySelector("header").setAttribute('aria-hidden', true);
     }
 
     closeLightbox(e){
@@ -245,6 +261,9 @@ class Lightbox{
         document.removeEventListener('keyup',this.onKeyUp);
         document.querySelector('.lightbox').style.display = 'none';
 
+        document.querySelector('.lightbox').setAttribute('aria-hidden', true);
+        document.querySelector("main").setAttribute('aria-hidden', false);
+        document.querySelector("header").setAttribute('aria-hidden', false);
     }
 
     nextPicture(e){ // click right
@@ -259,6 +278,7 @@ class Lightbox{
             this.selectedImage = this.listImage[currentIndex+1]; // display next image of the list        
             this.displayImage()
         }
+        document.querySelector('.image-title').focus();
     }
 
     previousPicture(e){ // click left
@@ -275,6 +295,7 @@ class Lightbox{
             this.selectedImage = this.listImage[currentIndex-1];         
             this.displayImage()
         }
+        document.querySelector('.image-title').focus();
     }
 }
 
@@ -284,27 +305,64 @@ document.querySelector(".button_dropdown").addEventListener('click', showOptions
 // function which SHOW the sort options
 function showOptions() {
     document.querySelector(".sort_dropdown_options").classList.toggle("show");
+    document.querySelector('.button_dropdown').setAttribute('aria-expanded', true);
+
   }
 
 window.addEventListener('click',hideExceptButton); 
 // function which HIDE the sort options if we click anywhere on the widow except from the button.
+
 function hideExceptButton (event){
-    if (!event.target.matches('.button_dropdown') && !event.target.matches('.fa-chevron-down') && !event.target.matches('.button-name') ) {
+    if (!event.target.matches('.button_dropdown') && !event.target.matches('.fa-chevron-down') && !event.target.matches('.button-name')) {
         hideOptions();
     }
 }
 
 function hideOptions() {
+    if(document.querySelector(".sort_dropdown_options").classList.contains("show")) {
     document.querySelector(".sort_dropdown_options").classList.remove("show");
+    document.querySelector('.button_dropdown').setAttribute('aria-expanded', false);
+    }
 }
 
-// function sort 3 options    
+document.querySelector(".sort_dropdown_options").addEventListener('keyup', onKeyUpEscape);
+document.querySelector('.button_dropdown').addEventListener('keyup', onKeyUpEscape);
+function onKeyUpEscape(e) {
+    if(e.key === 'Escape') {
+        hideOptions();
+    }
+} 
+
+// function sort 3 options   
+    // function keyup for keyboard accessibility
+
+function onKeyUpPopularity(e) {
+    if(e.key === 'Enter') {
+    sortByPopularity();
+    hideOptions();
+    }
+} 
+function onKeyUpDate(e) {
+    if(e.key === 'Enter') {
+    sortByDate()
+    hideOptions();
+    }
+}  
+function onKeyUpTitle(e) {
+    if(e.key === 'Enter') {
+    sortByTitle()
+    hideOptions();
+    }
+}   
+
     // sort by Popularity from biggest likes to smallest likes
 function changeButtonName(newName) {
     document.querySelector(".button-name").textContent = newName; 
 }
 
-document.querySelector("#popularity").addEventListener('click', sortByPopularity); 
+document.querySelector(".align-sort").addEventListener('click', sortByPopularity);
+document.querySelector(".align-sort").addEventListener('keyup',onKeyUpPopularity);
+
 function sortByPopularity() {
     
     const arrayByLikes = photographerPage.photographerGallery.sort(function(a,b) {
@@ -317,6 +375,8 @@ function sortByPopularity() {
 }
     // sort by Date from the newest to the oldest
 document.querySelector("#date").addEventListener('click', sortByDate); 
+document.querySelector("#date").addEventListener('keyup',onKeyUpDate);
+
 function sortByDate() {
     
     const arrayByDate = photographerPage.photographerGallery.sort(function(a,b) {
@@ -331,6 +391,8 @@ function sortByDate() {
     // sort by Title alphabetically
 
 document.querySelector("#title").addEventListener('click', sortByTitle); 
+document.querySelector("#title").addEventListener('keyup',onKeyUpTitle);
+
 function sortByTitle() {
 
     const arrayByTitle = photographerPage.photographerGallery.sort(function(a,b) {
@@ -342,7 +404,7 @@ function sortByTitle() {
     photographerPage.updateGallery(arrayByTitle);
 }
 
-/* Displaying info */
+/* DISPLAYING LIKES AND PRICE INFO */
 
 // display the likes
 function displayLikes() {
@@ -366,8 +428,8 @@ async function init() {
     
     const result = await getPhotographerData();
     const photographerId = getPhotographerId();
-    const selectedPhotographer = result.photographers.find(photographer=>photographer.id===parseInt(photographerId,10));
-    const photographerGallery = result.media.filter(mediaObject=>mediaObject.photographerId===parseInt(photographerId,10))
+    const selectedPhotographer = result.photographers.find(photographer=>photographer.id===Number(photographerId));
+    const photographerGallery = result.media.filter(mediaObject=>mediaObject.photographerId===Number(photographerId));
     photographerPage = new PhotographerPage(selectedPhotographer, photographerGallery);
     photographerPage.displayPhotographerPresentation();
     sortByPopularity(); // display the gallery, sorted by popularity "by default".

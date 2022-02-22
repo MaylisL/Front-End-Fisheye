@@ -1,9 +1,16 @@
+html {
+    font-size: 16px;
+}
+
 body {
     position: relative;
 }
 #main {
     margin-inline: 100px;
 }
+p {
+    line-height: 1.5;
+ }
 #contact_modal {
     display: none;
     position: absolute;
@@ -19,22 +26,21 @@ body {
 .photograph-header {
     background-color: #FAFAFA;
     height: 300px;
-    /* margin-inline: 100px;  */
     margin-bottom: 17px;
     width: 1140px;
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
     align-items: center;
     padding-inline: 50px;
 
 }
 
 .photographer_portrait {
-    order:3;
     border-radius: 50%;
     overflow: hidden;
     height: 200px;
     width: 200px;
+    margin-left: 90px;
 }
 
 .photographer_portrait img {
@@ -47,23 +53,23 @@ body {
 .photograph-header h2 {
     margin-block: 0;
     color: #D3573C;
-    font-size: 64px;
+    font-size: 4rem;
     font-weight: 400;
 }
 
 .location_presentation {
     color:#901C1C;
-    font-size: 24px;
+    font-size: 1.5rem;
     margin-top: 3px;
 }
 
 .tagline_presentation {
     color: #525252;
-    font-size: 18px;
+    font-size: 1.12rem;
     margin-top: 10px;
 }
 .contact_button {
-    font-size: 18px;
+    font-size: 1.12rem;
     font-weight: 700;
     color: white;
     padding: 11px;
@@ -73,9 +79,8 @@ body {
     background-color: #901C1C;
     border-radius: 5px;
     cursor: pointer;
-    order:2;
 }
-.contact_button:hover {
+.contact_button:hover, .contact_button:focus {
     background-color: #DB8876;
     color: #000000;
 }
@@ -111,7 +116,7 @@ body {
 }
 
 .modal header h2, .modal header p{
-    font-size: 64px;
+    font-size: 4rem;
     font-weight: normal;
     margin: 0;
 }
@@ -126,7 +131,7 @@ form {
 
 form label {
     color: #312E2E;
-    font-size: 36px;
+    font-size: 2.25rem;
     margin-top: 5px;
 }
 
@@ -151,7 +156,7 @@ form input, form textarea {
 }
 
 .photographer_sort {
-    font-size: 18px;
+    font-size: 1.12rem;
     font-weight: 700;
     display: flex;
     gap: 20px;
@@ -177,7 +182,7 @@ form input, form textarea {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 18px;
+    font-size: 1.12rem;
     font-weight: 700;
     font-family: "DM Sans", sans-serif;
     padding-inline: 10px;
@@ -185,10 +190,10 @@ form input, form textarea {
 
 .fa-chevron-up, .fa-chevron-down {
     color: #ffffff;
-    font-size: 18px;
+    font-size: 1.12rem;
     font-weight: 700;
 }
-.align-popularity {
+.align-sort {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -231,7 +236,6 @@ form input, form textarea {
     height: 351px;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
 }
 
 .card_image_container img, .card_image_container video {
@@ -250,7 +254,7 @@ form input, form textarea {
 }
 
 .card_body_container span {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 500;
 }
 
@@ -262,8 +266,14 @@ form input, form textarea {
 
 .card_body_container p {
     margin-right: auto;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 400;
+}
+
+.heart_icon-button {
+    cursor: pointer;
+    border: none;   
+    background-color: white;
 }
 
 .total-likes {
@@ -280,7 +290,7 @@ form input, form textarea {
     align-items: center;
     padding-left: 10px;
     padding-right: 34px;
-    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 .likes {
@@ -304,7 +314,6 @@ form input, form textarea {
     
 .lightbox_next {
     border: none;
-    /*background: url(assets/icons/left-arrow.svg) center center / 100% 100%;*/
     background: transparent;
     height:29.64px;
     width: 48px;
@@ -318,7 +327,6 @@ form input, form textarea {
 
 .lightbox_previous{
     border: none;
-    /*background: url(assets/icons/left-arrow.svg) center center / 100% 100%;*/
     background: transparent;
     height:29.64px;
     width: 48px;
@@ -361,9 +369,7 @@ form input, form textarea {
 
 .image-title {
     color: #901C1C;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: normal;
-    align-self: flex-start;
-    
-    
+    align-self: center;
 }

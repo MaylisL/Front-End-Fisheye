@@ -2,7 +2,6 @@
     
         const jsonData = await fetch('data/photographers.json')
         .then(responseData => responseData.json())
-        //.then(data => console.log(data));  
         
         return ({
             photographers: jsonData.photographers
