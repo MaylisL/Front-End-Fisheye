@@ -1,6 +1,8 @@
+/*global photographerFactory*/    
+    
     async function getPhotographers() {
     
-        const jsonData = await fetch('data/photographers.json')
+        const jsonData = await fetch("data/photographers.json")
         .then(responseData => responseData.json())
         
         return ({
@@ -16,13 +18,13 @@
             const userCardDOM = photographerModel.getUserCardDOM();
             photographersSection.appendChild(userCardDOM);
         });
-    };
+    }
 
     async function init() {
-        // Récupère les datas des photographes
-        const { photographers } = await getPhotographers();
+        // take photographer data
+        const response = await getPhotographers();
+        const photographers = response.photographers;
         displayData(photographers);
-    };
-    
+    }
     init();
     
