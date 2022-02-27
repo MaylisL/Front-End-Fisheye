@@ -347,7 +347,7 @@ function changeButtonName(newName) {
     document.querySelector(".button-name").textContent = newName; 
 }
 
-document.querySelector(".align-sort").addEventListener("fullscreenchange", sortByPopularity);
+document.querySelector(".align-sort").addEventListener("click", sortByPopularity);
 document.querySelector(".align-sort").addEventListener("keyup",onKeyUpPopularity);
 
 function sortByPopularity() {
