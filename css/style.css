@@ -54,6 +54,9 @@ h1 {
     height: 200px;
     width: 200px;
 }
+.photographer-presentation{
+    text-align: center;
+}
 
 .photographer_section article h2 {
     margin-block: 0;
